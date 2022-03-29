@@ -7,14 +7,27 @@ Library : Scapy2.4.3
 https://github.com/purmirl/PACKET-CAPTURE/quiver
 last update : 2022 MAR
 """
-# from scapy.layers.inet import ICMP
-# from scapy.sendrecv import sniff
 from scapy.all import *
 
+""" @:packet capture
+sniff parameter
+    01. count (integer) : packet capture count. if 0 --> unlimited.
+    02. store (integer) : store captured packet. if 0 --> no store.
+    03. prn (def name) : packet operate function (def).
+    04. filter (string) : user filtering.
+    05. timeout (integer) : sniffing timer (seconds).
+    06. iface (string) : network interface.
+"""
+def packet_capture(_count, _store, _prn, _filter, _timeout, _iface):
+    sniff(count = _count, store = _store, prn = _prn, filter = _filter, timeout = _timeout, iface = _iface)
+    return
 
-def packet_capture(_count, _prn, _filter):
-    sniff(prn = parsing_packet, filter = 'tcp')
-    # sniff(count = _count, prn = _prn, filter = _filter)
+def simple_packet_capture(_source_ip_address, _destination_ip_address, _destination_port_number):
+    _filter = "src host " + _source_ip_address \
+             + " and dst host " + _destination_ip_address \
+             + " and dst port " + _destination_port_number
+    _prn = ""
+    sniff(count = 1, prn = _prn, filter = _filter)
     return
 
 def parsing_packet(_packet):
