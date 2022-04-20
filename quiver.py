@@ -19,15 +19,35 @@ sniff parameter
     06. iface (string) : network interface.
 """
 def packet_capture(_count, _store, _prn, _filter, _timeout, _iface):
-    sniff(count = _count, store = _store, prn = _prn, filter = _filter, timeout = _timeout, iface = _iface)
-    return
+    packet = sniff(count = _count, store = _store, prn = _prn, filter = _filter, timeout = _timeout, iface = _iface)
+    return packet
 
-def simple_packet_capture(_source_ip_address, _destination_ip_address, _destination_port_number):
+""" @:user function
+"""
+def tcp_capture_srchost(_source_ip_address, _prn):
+    _filter = "src host " + _source_ip_address \
+             + " tcp"
+    packet = sniff(count = 1, prn = _prn, filter = _filter)
+    return packet
+
+def tcp_capture_srchost_dsthost(_source_ip_address, _destination_ip_address, _prn):
+    _filter = "src host " + _source_ip_address \
+              + " and dst host " + _destination_ip_address \
+              + " tcp"
+    packet = sniff(count = 1, prn = _prn, filter = _filter)
+    return packet
+
+def tcp_capture_srchost_dsthost_dstport(_source_ip_address, _destination_ip_address, _destination_port_number, _prn):
     _filter = "src host " + _source_ip_address \
              + " and dst host " + _destination_ip_address \
-             + " and dst port " + _destination_port_number
-    _prn = ""
-    sniff(count = 1, prn = _prn, filter = _filter)
+             + " and dst port " + _destination_port_number \
+             + " tcp"
+    packet = sniff(count = 1, prn = _prn, filter = _filter)
+    return packet
+
+def arp_capture(_prn):
+    _filter = "arp"
+    packet = sniff(count = 1, prn = _prn, filter = _filter)
     return
 
 def parsing_packet(_packet):
@@ -41,7 +61,10 @@ def parsing_packet(_packet):
     return
 
 def main():
-    packet_capture(1, parsing_packet, "UDP")
+    print("??")
+    _filter = "tcp"
+    sniff(count = 1, prn = parsing_packet, filter = _filter)
+
     print("break")
     return
 
