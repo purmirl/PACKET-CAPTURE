@@ -8,6 +8,7 @@ https://github.com/purmirl/PACKET-CAPTURE/quiver
 last update : 2022 MAR
 """
 from scapy.all import *
+from scapy.layers.l2 import Ether, ARP
 
 """ @:packet capture
 sniff parameter
@@ -45,9 +46,28 @@ def tcp_capture_srchost_dsthost_dstport(_source_ip_address, _destination_ip_addr
     packet = sniff(count = 1, prn = _prn, filter = _filter)
     return packet
 
-def arp_capture(_prn):
+def arp_capture():
+    while True:
+        sniff(count = 1, filter = "arp", prn = parsing_arp, store = 0)
+    return
+
+def parsing_arp(_packet):
+    _packet.show()
+    ethernet_src = _packet[Ether].src # source mac address
+    ethernet_dst = _packet[Ether].dst # destination mac address
+    hwsrc = _packet[ARP].hwsrc # sender mac address
+    psrc = _packet[ARP].psrc # sender ip address
+    hwdst = _packet[ARP].hwdst # target mac address, if ARP request : set "00:00:00:00:00:00"
+    pdst = _packet[ARP].pdst # target ip address
+    op = _packet[ARP].op # operation code, 1 : request, 2 : reply
+    return
+
+
+def arp_capture_(_prn):
     _filter = "arp"
-    packet = sniff(count = 1, prn = _prn, filter = _filter)
+    while True:
+        packet = sniff(count=1, filter=_filter)
+
     return
 
 def parsing_packet(_packet):
@@ -62,8 +82,9 @@ def parsing_packet(_packet):
 
 def main():
     print("??")
-    _filter = "tcp"
-    sniff(count = 1, prn = parsing_packet, filter = _filter)
+    arp_capture()
+    # _filter = "tcp"
+    # sniff(count = 1, prn = parsing_packet, filter = _filter)
 
     print("break")
     return
