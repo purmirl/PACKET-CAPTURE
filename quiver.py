@@ -53,13 +53,22 @@ def arp_capture():
 
 def parsing_arp(_packet):
     _packet.show()
-    ethernet_src = _packet[Ether].src # source mac address
-    ethernet_dst = _packet[Ether].dst # destination mac address
-    hwsrc = _packet[ARP].hwsrc # sender mac address
-    psrc = _packet[ARP].psrc # sender ip address
-    hwdst = _packet[ARP].hwdst # target mac address, if ARP request : set "00:00:00:00:00:00"
-    pdst = _packet[ARP].pdst # target ip address
-    op = _packet[ARP].op # operation code, 1 : request, 2 : reply
+    ethernet_src = _packet[Ether].src # source mac address, string
+    ethernet_dst = _packet[Ether].dst # destination mac address, string
+    hwsrc = _packet[ARP].hwsrc # sender mac address, string
+    psrc = _packet[ARP].psrc # sender ip address, string
+    hwdst = _packet[ARP].hwdst # target mac address, if ARP request : set "00:00:00:00:00:00", string
+    pdst = _packet[ARP].pdst # target ip address, string
+    op = _packet[ARP].op # operation code, 1 : request, 2 : reply, integer
+
+    print("ethernet_src = " + ethernet_src)
+    print("ethernet_dst = " + ethernet_dst)
+    print("hwsrc = " + hwsrc)
+    print("psrc = " + psrc)
+    print("hwdst = " + hwdst)
+    print("pdst = " + pdst)
+    print("op = " + str(op))
+
     return
 
 
