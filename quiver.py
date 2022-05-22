@@ -76,6 +76,8 @@ def arp_capture_(_prn):
     _filter = "arp"
     while True:
         packet = sniff(count=1, filter=_filter)
+        print("###############################################################")
+        packet.show()
 
     return
 
